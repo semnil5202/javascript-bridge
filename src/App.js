@@ -1,5 +1,7 @@
 class App {
   play() {}
-}
 
-module.exports = App;
+  test() {
+    console.log('test clear');
+  }
+}
