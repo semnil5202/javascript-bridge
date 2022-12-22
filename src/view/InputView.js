@@ -1,4 +1,5 @@
 const { Console } = require('@woowacourse/mission-utils');
+const { INPUT } = require('../utils/constant');
 
 /**
  * 사용자로부터 입력을 받는 역할을 한다.
@@ -9,8 +10,8 @@ const InputView = {
    * @param {string} 사용자 입력 안내문
    * @param {function()} 사용자 입력을 받은 후 실행할 콜백 함수
    */
-  readBridgeSize(message, callback) {
-    Console.readLine(message, callback);
+  readBridgeSize(callback) {
+    Console.readLine(INPUT.BRIDGE_SIZE, callback);
   },
 
   /**
@@ -18,8 +19,8 @@ const InputView = {
    * @param {string} 사용자 입력 안내문
    * @param {function()} 사용자 입력을 받은 후 실행할 콜백 함수
    */
-  readMoving(message, callback) {
-    Console.readLine(message, callback);
+  readMoving(callback) {
+    Console.readLine(INPUT.CHOOSE_BLOCK, callback);
   },
 
   /**
@@ -27,8 +28,8 @@ const InputView = {
    * @param {string} 사용자 입력 안내문
    * @param {function()} 사용자 입력을 받은 후 실행할 콜백 함수
    */
-  readGameCommand(message, callback) {
-    Console.readLine(message, callback);
+  readGameCommand(callback) {
+    Console.readLine(INPUT.RESTART, callback);
   },
 
   /**

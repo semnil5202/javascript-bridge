@@ -31,11 +31,9 @@ const OutputView = {
    * 현재까지 이동한 다리의 상태를 정해진 형식에 맞춰 출력한다.
    * @param {string[]} bridgeRecords 사용자가 움직인 칸의 기록
    */
-  printMap(bridgeRecords) {
-    const upperBridge = bridgeRecords[0];
-    const lowerBridge = bridgeRecords[1];
-    Console.print(OUTPUT.UPPER(upperBridge));
-    Console.print(OUTPUT.LOWER(lowerBridge));
+  printMap({ up, down }) {
+    Console.print(OUTPUT.UPPER(up));
+    Console.print(OUTPUT.LOWER(down));
   },
 
   /**
@@ -44,12 +42,10 @@ const OutputView = {
    * @param {number} tries 게임 총 시도 횟수
    * @param {string[]} bridgeRecords 사용자가 움직인 칸의 기록
    */
-  printResult(result, tries, bridgeRecords) {
-    const upperBridge = bridgeRecords[0];
-    const lowerBridge = bridgeRecords[1];
+  printResult(up, down, result, tries) {
     Console.print(OUTPUT.RESULT_MENT);
-    Console.print(OUTPUT.UPPER(upperBridge));
-    Console.print(OUTPUT.LOWER(lowerBridge));
+    Console.print(OUTPUT.UPPER(up));
+    Console.print(OUTPUT.LOWER(down));
     Console.print(OUTPUT.IS_SUCCESS_GAME(result));
     Console.print(OUTPUT.TOTAL_TRIES(tries));
   },
