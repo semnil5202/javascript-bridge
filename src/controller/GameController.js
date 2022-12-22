@@ -1,153 +1,109 @@
 const OutputView = require('../view/OutputView');
 const InputView = require('../view/InputView');
-const BridgeMaker = require('../BridgeMaker');
-const BridgeNumber = require('../BridgeRandomNumberGenerator');
 const Validation = require('../utils/Validation');
-const BridgeRecorder = require('../model/BridgeRecorder');
-const { UTIL, INPUT } = require('../utils/constant');
+const { UTIL } = require('../utils/constant');
 
-/**
- * 다리 건너기 게임을 관리하는 클래스
- */
-class BridgeGame {
-  #turn;
-  #tries;
-  #isPlay;
-  #isSuccess;
-  #answers;
-  #bridgeRecords;
+class GameController {
+  #service;
+  #tries = 1;
+  #bridges;
 
-  constructor() {
-    this.#turn = UTIL.INIT;
-    this.#tries = UTIL.FIRST;
-    this.#isPlay = true;
-    this.#isSuccess = false;
-    this.#bridgeRecords = new BridgeRecorder([], []);
+  constructor(service) {
+    this.#service = service;
   }
 
   startGame() {
     OutputView.startMent();
-    this.#inputBridgeLength();
+    this.#inputBridgeSize();
   }
 
-  /**
-   * 다리 사이즈 입력에 대한 콜백 함수
-   */
-  #inputBridgeLength() {
-    const bridgeLength = (size) => {
-      OutputView.newLine();
-      const input = Number(size);
-      this.#answers = BridgeMaker.makeBridge(input, BridgeNumber.generate);
-      const validation = this.#bridgeLengthValidation(input);
-      if (validation) this.#inputMoving();
-      if (!validation) this.#inputBridgeLength();
-    };
-    InputView.readBridgeSize(INPUT.BRIDGE_SIZE, bridgeLength);
+  #inputBridgeSize() {
+    InputView.readBridgeSize((input) => {
+      this.#BridgeSzie(Number(input));
+    });
   }
 
-  /**
-   * 다리 사이즈에 대한 사용자 입력 값 예외 검증 메서드
-   * @param {string} input 사용자가 입력한 다리 사이즈
-   * @returns 예외 발생 시 false, 예외 미발생 시 true
-   */
-  #bridgeLengthValidation(input) {
+  #BridgeSzie(input) {
     try {
       Validation.validateSize(input);
-      return true;
+      this.#service.makeBridge(input);
+      this.#inputMove();
     } catch (error) {
       OutputView.printError(error);
-      return false;
+      this.#inputBridgeSize();
     }
   }
 
-  /**
-   * 이동할 칸 입력에 대한 콜백 함수
-   */
-  #inputMoving() {
-    const moving = (input) => {
-      const validation = this.#movingValidation(input);
-      if (!validation) this.#inputMoving();
-      if (validation) this.#move(input);
-      if (this.#isSuccess) this.#isSuccessGame(this.#isSuccess);
-      if (!this.#isSuccess && this.#isPlay) this.#inputMoving();
-      if (!this.#isSuccess && !this.#isPlay) this.#inputReGame();
-    };
-    InputView.readMoving(INPUT.CHOOSE_BLOCK, moving);
+  #inputMove() {
+    InputView.readMoving((input) => {
+      this.#move(input);
+    });
   }
 
-  /**
-   * 이동할 칸에 대한 사용자 입력 값 예외 검증 메서드
-   * @param {string} input 사용자가 입력한 이동할 칸
-   * @returns 예외 발생 시 false, 예외 미발생 시 true
-   */
-  #movingValidation(input) {
+  #move(input) {
     try {
       Validation.validateMove(input);
-      return true;
+      const result = this.#service.checkMoving(input);
+      const isMove = result.isGo;
+      this.#bridges = result.bridges;
+      this.#outputMoving();
+      this.#keepMoving(isMove);
     } catch (error) {
       OutputView.printError(error);
-      return false;
+      this.#inputMove();
     }
   }
 
-  /**
-   * 게임 재시도 및 종료 입력에 대한 콜백 함수
-   */
-  #inputReGame() {
-    const reGame = (input) => {
-      const validation = this.#reGameValidation(input);
-      if (!validation) this.#inputReGame();
-      if (input === UTIL.RETRY) this.#retry();
-      if (input === UTIL.QUIT) this.#isSuccessGame(this.#isSuccess);
-    };
-    InputView.readMoving(INPUT.RESTART, reGame);
+  #keepMoving(isMove) {
+    if (this.#service.isSuccessGame()) this.#isEndGame();
+    if (!this.#service.isSuccessGame() && isMove) this.#inputMove();
+    if (!this.#service.isSuccessGame() && !isMove) this.#inputReGame();
   }
 
-  /**
-   * 게임 재시도 및 종료에 대한 사용자 입력 값 예외 검증 메서드
-   * @param {string} input 사용자가 입력한 재시도 및 종료 값
-   * @returns 예외 발생 시 false, 예외 미발생 시 true
-   */
-  #reGameValidation(input) {
+  #isEndGame() {
+    this.#outputResult(UTIL.SUCCESS);
+  }
+
+  #inputReGame() {
+    InputView.readGameCommand((input) => {
+      this.#reGame(input);
+    });
+  }
+
+  #reGame(input) {
     try {
       Validation.validateReGame(input);
-      return true;
+      this.#keepGaming(input);
     } catch (error) {
       OutputView.printError(error);
-      return false;
+      this.#inputReGame();
     }
   }
 
-  /**
-   * 사용자가 칸을 이동할 때 사용하는 메서드
-   * @param {string} input 사용자가 입력한 이동할 칸
-   */
-  #move(input) {
-    const crossable = this.#answers[this.#turn];
-    this.#turn += 1;
-    this.#isCorrect(input, crossable);
+  #keepGaming(input) {
+    if (input === UTIL.RETRY) {
+      this.#tries += 1;
+      this.#service.initTurn();
+      this.#service.initRecordBridge();
+      this.#inputMove();
+    }
+    if (input === UTIL.QUIT) {
+      this.#outputResult(UTIL.FAIL);
+    }
   }
 
-  /**
-   * 사용자가 게임을 다시 시도할 때 사용하는 메서드
-   */
-  #retry() {
-    this.#turn = UTIL.INIT;
-    this.#tries += 1;
-    this.#isPlay = true;
-    this.#bridgeRecords.init();
-    this.#inputMoving();
+  #outputMoving() {
+    const up = this.#bridges.up.join(',').replace(/,/g, '|');
+    const down = this.#bridges.down.join(',').replace(/,/g, '|');
+    OutputView.printMap({ up, down });
   }
 
-  /**
-   * 사용자가 게임을 종료할 때 성공여부와, 총 시도횟수, 다리기록을 알려주는 메서드
-   */
-  #isSuccessGame(isSuccess) {
+  #outputResult(success) {
+    const up = this.#bridges.up.join(',').replace(/,/g, '|');
+    const down = this.#bridges.down.join(',').replace(/,/g, '|');
+    OutputView.printResult(up, down, success, this.#tries);
     InputView.closeRead();
-    const records = this.#bridgeRecords.getResult();
-    if (isSuccess) OutputView.printResult(UTIL.SUCCESS, this.#tries, records);
-    if (!isSuccess) OutputView.printResult(UTIL.FAIL, this.#tries, records);
   }
 }
 
-module.exports = BridgeGame;
+module.exports = GameController;
