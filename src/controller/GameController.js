@@ -129,64 +129,6 @@ class BridgeGame {
   }
 
   /**
-   * 사용자가 입력한 칸이 건널 수 있는 칸인지 판별하는 메서드
-   * @param {string} input 사용자가 입력한 이동할 칸
-   * @param {string} crossable 건널 수 있는 칸
-   */
-  #isCorrect(input, crossable) {
-    if (input === crossable) this.#isFirst(UTIL.GO, input);
-    if (input !== crossable) {
-      this.#isPlay = false;
-      this.#isFirst(UTIL.STOP, input);
-    }
-    if (input === crossable && this.#turn === this.#answers.length) {
-      this.#isSuccess = true;
-    }
-  }
-
-  /**
-   * 사용자가 입력한 칸이 첫 칸인지 그 이후의 칸인지 판별하는 메서드
-   * @param {string} state 사용자가 이동한 칸과 정답을 비교한 결과
-   * @param {string} input 사용자가 이동한 칸
-   */
-  #isFirst(state, input) {
-    if (this.#turn === UTIL.FIRST) this.#firstBlock(state, input);
-    if (this.#turn !== UTIL.FIRST) this.#afterFirstBlock(state, input);
-  }
-
-  /**
-   * 사용자가 입력한 칸이 첫 칸인 경우 실행되는 메서드
-   * @param {string} state 사용자가 이동한 칸과 정답을 비교한 결과
-   * @param {string} input 사용자가 이동한 칸
-   */
-  #firstBlock(state, input) {
-    if (input === UTIL.UP) {
-      const bridgeRecords = this.#bridgeRecords.addFirstUpBlock(state);
-      OutputView.printMap(bridgeRecords);
-    }
-    if (input === UTIL.DOWN) {
-      const bridgeRecords = this.#bridgeRecords.addFirstDownBlock(state);
-      OutputView.printMap(bridgeRecords);
-    }
-  }
-
-  /**
-   * 사용자가 입력한 칸이 첫 칸 이후인 경우 실행되는 메서드
-   * @param {string} state 사용자가 이동한 칸과 정답을 비교한 결과
-   * @param {string} input 사용자가 이동한 칸
-   */
-  #afterFirstBlock(state, input) {
-    if (input === UTIL.UP) {
-      const bridgeRecords = this.#bridgeRecords.addUpBlock(state);
-      OutputView.printMap(bridgeRecords);
-    }
-    if (input === UTIL.DOWN) {
-      const bridgeRecords = this.#bridgeRecords.addDownBlock(state);
-      OutputView.printMap(bridgeRecords);
-    }
-  }
-
-  /**
    * 사용자가 게임을 다시 시도할 때 사용하는 메서드
    */
   #retry() {
