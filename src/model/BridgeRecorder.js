@@ -1,8 +1,12 @@
-const { BRIDGE } = require('../utils/constant');
-
 class BridgeRecorder {
+  static #instance;
   #up = [];
   #down = [];
+
+  constructor() {
+    if (BridgeRecorder.#instance !== undefined) return BridgeRecorder.#instance;
+    BridgeRecorder.#instance = this;
+  }
 
   init() {
     this.#up = [];
