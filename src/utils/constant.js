@@ -11,6 +11,8 @@ const UTIL = Object.freeze({
   INIT: 0,
   MIN: 3,
   MAX: 20,
+  SEPARATOR: ',',
+  TRANSLATOR: '|',
 });
 
 const BRIDGE = Object.freeze({
