@@ -21,7 +21,8 @@ class BridgeGame {
 
   checkMoving(move) {
     const result = new Bridge(this.#answer[this.#turn], move).returnBridge();
-    return { isGo: this.isGo(result), bridges: this.recordBridge(result) };
+    this.recordBridge(result);
+    return this.isGo(result);
   }
 
   isGo(result) {
@@ -31,6 +32,10 @@ class BridgeGame {
     }
     this.#turn = 0;
     return false;
+  }
+
+  getRecordBridge() {
+    return new BridgeRecorder().getRecord();
   }
 
   recordBridge(result) {

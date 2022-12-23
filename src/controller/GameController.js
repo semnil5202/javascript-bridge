@@ -6,7 +6,6 @@ const { UTIL } = require('../utils/constant');
 class GameController {
   #service;
   #tries = 1;
-  #bridges;
 
   constructor(service) {
     this.#service = service;
@@ -44,9 +43,7 @@ class GameController {
   #move(input) {
     try {
       Validation.validateMove(input);
-      const result = this.#service.checkMoving(input);
-      const isMove = result.isGo;
-      this.#bridges = result.bridges;
+      const isMove = this.#service.checkMoving(input);
       this.#outputMoving();
       this.#keepMoving(isMove);
     } catch (error) {
@@ -94,8 +91,9 @@ class GameController {
   }
 
   outputBridge() {
-    const up = this.#bridges.up.join(UTIL.SEPARATOR).replace(/,/g, UTIL.TRANSLATOR);
-    const down = this.#bridges.down.join(UTIL.SEPARATOR).replace(/,/g, UTIL.TRANSLATOR);
+    const bridge = this.#service.getRecordBridge();
+    const up = bridge.up.join(UTIL.SEPARATOR).replace(/,/g, UTIL.TRANSLATOR);
+    const down = bridge.down.join(UTIL.SEPARATOR).replace(/,/g, UTIL.TRANSLATOR);
     return { up, down };
   }
 

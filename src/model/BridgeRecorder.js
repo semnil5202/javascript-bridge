@@ -13,6 +13,10 @@ class BridgeRecorder {
     this.#down = [];
   }
 
+  getRecord() {
+    return { up: this.#up, down: this.#down };
+  }
+
   recordBridge({ up, down }) {
     this.#up.push(up);
     this.#down.push(down);
