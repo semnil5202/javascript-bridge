@@ -93,15 +93,19 @@ class GameController {
     }
   }
 
-  #outputMoving() {
+  outputBridge() {
     const up = this.#bridges.up.join(UTIL.SEPARATOR).replace(/,/g, UTIL.TRANSLATOR);
     const down = this.#bridges.down.join(UTIL.SEPARATOR).replace(/,/g, UTIL.TRANSLATOR);
+    return { up, down };
+  }
+
+  #outputMoving() {
+    const { up, down } = this.outputBridge();
     OutputView.printMap({ up, down });
   }
 
   #outputResult(success) {
-    const up = this.#bridges.up.join(UTIL.SEPARATOR).replace(/,/g, UTIL.TRANSLATOR);
-    const down = this.#bridges.down.join(UTIL.SEPARATOR).replace(/,/g, UTIL.TRANSLATOR);
+    const { up, down } = this.outputBridge();
     OutputView.printResult(up, down, success, this.#tries);
     InputView.closeRead();
   }
