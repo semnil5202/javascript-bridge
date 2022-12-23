@@ -85,8 +85,7 @@ class GameController {
   #keepGaming(input) {
     if (input === UTIL.RETRY) {
       this.#tries += 1;
-      this.#service.initTurn();
-      this.#service.initRecordBridge();
+      this.#service.retry();
       this.#inputMove();
     }
     if (input === UTIL.QUIT) {

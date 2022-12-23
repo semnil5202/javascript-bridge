@@ -28,10 +28,10 @@ class BridgeGame {
   checkMoving(move) {
     const result = new Bridge(this.#answer[this.#turn], move).returnBridge();
     this.recordBridge(result);
-    return this.isGo(result);
+    return this.move(result);
   }
 
-  isGo(result) {
+  move(result) {
     if (result.up.includes(UTIL.GO) || result.down.includes(UTIL.GO)) {
       this.#turn += 1;
       return true;
@@ -40,16 +40,21 @@ class BridgeGame {
     return false;
   }
 
+  retry() {
+    this.initTurn();
+    this.initRecordBridge();
+  }
+
+  initRecordBridge() {
+    new BridgeRecorder().init();
+  }
+
   getRecordBridge() {
     return new BridgeRecorder().getRecord();
   }
 
   recordBridge(result) {
     return new BridgeRecorder().recordBridge(result);
-  }
-
-  initRecordBridge() {
-    new BridgeRecorder().init();
   }
 
   isSuccessGame() {
