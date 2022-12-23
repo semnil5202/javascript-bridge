@@ -1,3 +1,4 @@
+const BridegeDto = require('../dto/BridgeDto');
 const { UTIL, BRIDGE } = require('../utils/constant');
 
 class Bridge {
@@ -9,8 +10,8 @@ class Bridge {
     this.#input = input;
   }
 
-  returnBridge() {
-    return this.#checkPosition();
+  sendToDto() {
+    return new BridegeDto(this.#checkPosition());
   }
 
   #checkPosition() {

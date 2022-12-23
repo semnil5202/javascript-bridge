@@ -94,7 +94,7 @@ class GameController {
   }
 
   #outputBridge() {
-    const bridge = this.#service.getRecordBridge();
+    const bridge = this.#service.getRecordDto().getRecords();
     const up = bridge.up.join(UTIL.SEPARATOR).replace(/,/g, UTIL.TRANSLATOR);
     const down = bridge.down.join(UTIL.SEPARATOR).replace(/,/g, UTIL.TRANSLATOR);
     return { up, down };

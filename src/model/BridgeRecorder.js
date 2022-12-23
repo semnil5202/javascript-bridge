@@ -1,3 +1,5 @@
+const BridegeRecordDto = require('../dto/BridgeRecordDto');
+
 class BridgeRecorder {
   static #instance;
   #up = [];
@@ -13,8 +15,8 @@ class BridgeRecorder {
     this.#down = [];
   }
 
-  getRecord() {
-    return { up: this.#up, down: this.#down };
+  sendToDto() {
+    return new BridegeRecordDto({ up: this.#up, down: this.#down });
   }
 
   recordBridge({ up, down }) {
