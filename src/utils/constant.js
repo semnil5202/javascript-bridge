@@ -13,6 +13,12 @@ const UTIL = Object.freeze({
   MAX: 20,
 });
 
+const BRIDGE = Object.freeze({
+  GO: ' O ',
+  STOP: ' X ',
+  NULL: '   ',
+});
+
 const INPUT = Object.freeze({
   BRIDGE_SIZE: '다리의 길이를 입력해주세요.\n',
   CHOOSE_BLOCK: '이동할 칸을 선택해주세요. (위: U, 아래: D)\n',
@@ -39,6 +45,7 @@ const ERROR = Object.freeze({
 
 module.exports = {
   UTIL,
+  BRIDGE,
   INPUT,
   OUTPUT,
   ERROR,

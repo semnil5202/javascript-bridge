@@ -2,6 +2,7 @@ const Bridge = require('../model/Bridege');
 const BridgeRecorder = require('../model/BridgeRecorder');
 const BridgeMaker = require('../BridgeMaker');
 const BridgeNumber = require('../BridgeRandomNumberGenerator');
+const { UTIL } = require('../utils/constant');
 
 /**
  * 다리 건너기 게임을 관리하는 클래스
@@ -24,7 +25,7 @@ class BridgeGame {
   }
 
   isGo(result) {
-    if (result.up.includes('O') || result.down.includes('O')) {
+    if (result.up.includes(UTIL.GO) || result.down.includes(UTIL.GO)) {
       this.#turn += 1;
       return true;
     }

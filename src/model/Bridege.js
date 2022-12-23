@@ -1,4 +1,4 @@
-const { UTIL } = require('../utils/constant');
+const { UTIL, BRIDGE } = require('../utils/constant');
 
 class Bridge {
   #answer;
@@ -15,10 +15,14 @@ class Bridge {
 
   checkPosition() {
     const input = this.checkRightInput();
-    if (input === UTIL.GO && this.#input === UTIL.UP) return { up: ' O ', down: '   ' };
-    if (input === UTIL.GO && this.#input === UTIL.DOWN) return { up: '   ', down: ' O ' };
-    if (input === UTIL.STOP && this.#input === UTIL.UP) return { up: ' X ', down: '   ' };
-    if (input === UTIL.STOP && this.#input === UTIL.DOWN) return { up: '   ', down: ' X ' };
+    if (input === UTIL.GO && this.#input === UTIL.UP) return { up: BRIDGE.GO, down: BRIDGE.NULL };
+    if (input === UTIL.GO && this.#input === UTIL.DOWN) return { up: BRIDGE.NULL, down: BRIDGE.GO };
+    if (input === UTIL.STOP && this.#input === UTIL.UP) {
+      return { up: BRIDGE.STOP, down: BRIDGE.NULL };
+    }
+    if (input === UTIL.STOP && this.#input === UTIL.DOWN) {
+      return { up: BRIDGE.NULL, down: BRIDGE.STOP };
+    }
   }
 
   checkRightInput() {
