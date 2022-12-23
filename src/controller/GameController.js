@@ -106,7 +106,7 @@ class GameController {
 
   #outputResult(success) {
     const { up, down } = this.outputBridge();
-    OutputView.printResult(up, down, success, this.#tries);
+    OutputView.printResult({ up, down, success, tries: this.#tries });
     InputView.closeRead();
   }
 }

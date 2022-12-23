@@ -42,7 +42,7 @@ const OutputView = {
    * @param {number} tries 게임 총 시도 횟수
    * @param {string[]} bridgeRecords 사용자가 움직인 칸의 기록
    */
-  printResult(up, down, success, tries) {
+  printResult({ up, down, success, tries }) {
     Console.print(OUTPUT.RESULT_MENT);
     Console.print(OUTPUT.UPPER(up));
     Console.print(OUTPUT.LOWER(down));
