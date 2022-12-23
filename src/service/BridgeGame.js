@@ -8,8 +8,14 @@ const { UTIL } = require('../utils/constant');
  * 다리 건너기 게임을 관리하는 클래스
  */
 class BridgeGame {
+  static #instance;
   #answer;
   #turn = 0;
+
+  constructor() {
+    if (BridgeGame.#instance !== undefined) return BridgeGame.#instance;
+    BridgeGame.#instance = this;
+  }
 
   initTurn() {
     this.#turn = 0;
