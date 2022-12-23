@@ -94,14 +94,14 @@ class GameController {
   }
 
   #outputMoving() {
-    const up = this.#bridges.up.join(',').replace(/,/g, '|');
-    const down = this.#bridges.down.join(',').replace(/,/g, '|');
+    const up = this.#bridges.up.join(UTIL.SEPARATOR).replace(/,/g, UTIL.TRANSLATOR);
+    const down = this.#bridges.down.join(UTIL.SEPARATOR).replace(/,/g, UTIL.TRANSLATOR);
     OutputView.printMap({ up, down });
   }
 
   #outputResult(success) {
-    const up = this.#bridges.up.join(',').replace(/,/g, '|');
-    const down = this.#bridges.down.join(',').replace(/,/g, '|');
+    const up = this.#bridges.up.join(UTIL.SEPARATOR).replace(/,/g, UTIL.TRANSLATOR);
+    const down = this.#bridges.down.join(UTIL.SEPARATOR).replace(/,/g, UTIL.TRANSLATOR);
     OutputView.printResult(up, down, success, this.#tries);
     InputView.closeRead();
   }
