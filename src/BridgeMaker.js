@@ -26,7 +26,7 @@ const BridgeMaker = {
    * @returns {string} 무작위 값에 해당하는 U 또는 D 문자
    */
   whereCrossable(answer) {
-    if (Number(answer) === 0) return UTIL.DOWN;
+    if (answer === 0) return UTIL.DOWN;
     return UTIL.UP;
   },
 };
