@@ -25,6 +25,7 @@ class GameController {
 
   #BridgeSzie(input) {
     try {
+      OutputView.newLine();
       Validation.validateSize(input);
       this.#service.makeBridge(input);
       this.#inputMove();
