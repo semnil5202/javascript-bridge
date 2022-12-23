@@ -93,7 +93,7 @@ class GameController {
     }
   }
 
-  outputBridge() {
+  #outputBridge() {
     const bridge = this.#service.getRecordBridge();
     const up = bridge.up.join(UTIL.SEPARATOR).replace(/,/g, UTIL.TRANSLATOR);
     const down = bridge.down.join(UTIL.SEPARATOR).replace(/,/g, UTIL.TRANSLATOR);
@@ -101,12 +101,12 @@ class GameController {
   }
 
   #outputMoving() {
-    const { up, down } = this.outputBridge();
+    const { up, down } = this.#outputBridge();
     OutputView.printMap({ up, down });
   }
 
   #outputResult(success) {
-    const { up, down } = this.outputBridge();
+    const { up, down } = this.#outputBridge();
     OutputView.printResult({ up, down, success, tries: this.#tries });
     InputView.closeRead();
   }

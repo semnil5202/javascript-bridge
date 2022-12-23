@@ -10,11 +10,11 @@ class Bridge {
   }
 
   returnBridge() {
-    return this.checkPosition();
+    return this.#checkPosition();
   }
 
-  checkPosition() {
-    const input = this.checkRightInput();
+  #checkPosition() {
+    const input = this.#checkRightInput();
     if (input === UTIL.GO && this.#input === UTIL.UP) return { up: BRIDGE.GO, down: BRIDGE.NULL };
     if (input === UTIL.GO && this.#input === UTIL.DOWN) return { up: BRIDGE.NULL, down: BRIDGE.GO };
     if (input === UTIL.STOP && this.#input === UTIL.UP) {
@@ -25,7 +25,7 @@ class Bridge {
     }
   }
 
-  checkRightInput() {
+  #checkRightInput() {
     if (this.#answer === this.#input) return UTIL.GO;
     return UTIL.STOP;
   }

@@ -17,7 +17,7 @@ class BridgeGame {
     BridgeGame.#instance = this;
   }
 
-  initTurn() {
+  #initTurn() {
     this.#turn = 0;
   }
 
@@ -27,11 +27,11 @@ class BridgeGame {
 
   checkMoving(move) {
     const result = new Bridge(this.#answer[this.#turn], move).returnBridge();
-    this.recordBridge(result);
-    return this.move(result);
+    this.#recordBridge(result);
+    return this.#move(result);
   }
 
-  move(result) {
+  #move(result) {
     if (result.up.includes(UTIL.GO) || result.down.includes(UTIL.GO)) {
       this.#turn += 1;
       return true;
@@ -41,11 +41,11 @@ class BridgeGame {
   }
 
   retry() {
-    this.initTurn();
-    this.initRecordBridge();
+    this.#initTurn();
+    this.#initRecordBridge();
   }
 
-  initRecordBridge() {
+  #initRecordBridge() {
     new BridgeRecorder().init();
   }
 
@@ -53,7 +53,7 @@ class BridgeGame {
     return new BridgeRecorder().getRecord();
   }
 
-  recordBridge(result) {
+  #recordBridge(result) {
     return new BridgeRecorder().recordBridge(result);
   }
 
